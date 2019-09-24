@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todoapp/models/todo.dart';
+import 'package:todoapp/widgets/weekView_bar.dart';
 
 class WeekView extends StatelessWidget {
   final List<Todo> recentTodos;
@@ -34,7 +35,9 @@ class WeekView extends StatelessWidget {
       elevation: 6,
       margin: EdgeInsets.all(20),
       child: Row(
-        children: <Widget>[],
+        children: groupedTodosValues.map((data) {
+          return WeekViewBar(data['day'], data['count']);
+        }).toList(),
       ),
     );
   }
