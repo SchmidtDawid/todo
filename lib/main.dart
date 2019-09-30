@@ -26,29 +26,30 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Todo> _userTodos = [
-    Todo(id: 1, title: 'Programować', status: 1, date: DateTime.now()),
-    Todo(id: 2, title: 'Posprzątać', status: 1, date: DateTime.now())
-  ];
-  
+  final List<Todo> _userTodos = [];
+
   List<Todo> get _recentTodos {
-    return _userTodos.where((todo){
-      return todo.date.isAfter(
-        DateTime.now().subtract(Duration(days: 7))
-      );
+    return _userTodos.where((todo) {
+      return todo.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
     }).toList();
   }
 
-  void _addNewTodo(String passedTitle, int passedStatus) {
+  void _addNewTodo(String passedTitle, int passedStatus, DateTime passedData) {
     final newTodo = Todo(
+      id: DateTime.now(),
       title: passedTitle,
       status: passedStatus,
-      date: DateTime.now(),
-      id: 1,
+      date: passedData,
     );
 
     setState(() {
       _userTodos.add(newTodo);
+    });
+  }
+
+  void _deleteTodo(DateTime id) {
+    setState(() {
+      _userTodos.removeWhere((todo) => todo.id == id);
     });
   }
 
@@ -74,10 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Container(
         child: Column(
-          children: <Widget>[
-            WeekView(_recentTodos),
-            TodoList(_userTodos)
-          ],
+          children: <Widget>[WeekView(_recentTodos), TodoList(_userTodos, _deleteTodo)],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

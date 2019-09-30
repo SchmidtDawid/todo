@@ -17,11 +17,11 @@ class _CreateNewTodoState extends State<CreateNewTodo> {
   void _addTodo() {
     final enteredTitle = titleController.text;
 
-    if (enteredTitle.isEmpty) {
+    if (enteredTitle.isEmpty || _selectedDate == null) {
       return;
     }
 
-    widget.addFunction(titleController.text, 1);
+    widget.addFunction(titleController.text, 1, _selectedDate);
     Navigator.of(context).pop();
   }
 

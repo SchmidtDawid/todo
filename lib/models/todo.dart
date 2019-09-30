@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class Todo {
-  final int id;
+  final DateTime id;
   final String title;
   final int status;
   final DateTime date;

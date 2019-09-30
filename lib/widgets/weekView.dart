@@ -33,11 +33,20 @@ class WeekView extends StatelessWidget {
     print(groupedTodosValues);
     return Card(
       elevation: 6,
-      margin: EdgeInsets.all(20),
-      child: Row(
-        children: groupedTodosValues.map((data) {
-          return WeekViewBar(data['day'], data['count']);
-        }).toList(),
+      margin: EdgeInsets.all(5),
+      child: Padding(
+        padding: EdgeInsets.all(10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: groupedTodosValues.map((data) {
+            return Flexible(
+              fit: FlexFit.tight,
+              child: WeekViewBar(
+                data['day'], data['count']
+              )
+            );
+          }).toList(),
+        ),
       ),
     );
   }
