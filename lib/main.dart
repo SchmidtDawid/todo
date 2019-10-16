@@ -5,7 +5,9 @@ import 'package:todoapp/widgets/weekView.dart';
 import 'widgets/create_new_todo.dart';
 import 'widgets/todo_list.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -33,6 +35,8 @@ class _MyHomePageState extends State<MyHomePage> {
       return todo.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
     }).toList();
   }
+
+  bool _showChart = false;
 
   void _addNewTodo(String passedTitle, int passedStatus, DateTime passedData) {
     final newTodo = Todo(
@@ -63,19 +67,64 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final bool _isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    final appBar = AppBar(
+      title: Text('Todo'),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _startAddNewTodo(context),
+        )
+      ],
+    );
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Todo'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => _startAddNewTodo(context),
-          )
-        ],
-      ),
-      body: Container(
-        child: Column(
-          children: <Widget>[WeekView(_recentTodos), TodoList(_userTodos, _deleteTodo)],
+      appBar: appBar,
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              if(_isLandscape) Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text("Pokaż tydzień"),
+                  Switch(
+                    value: _showChart,
+                    onChanged: (val) {
+                      setState(() {
+                        _showChart = val;
+                        print(val);
+                      });
+                    },
+                  )
+                ],
+              ),
+              if(!_isLandscape) Container(
+                      height: (MediaQuery.of(context).size.height -
+                              appBar.preferredSize.height -
+                              MediaQuery.of(context).padding.top) *
+                          0.3,
+                      child: WeekView(_recentTodos)),
+              if(!_isLandscape) Container(
+                      height: (MediaQuery.of(context).size.height -
+                              appBar.preferredSize.height -
+                              MediaQuery.of(context).padding.top) *
+                          0.7,
+                      child: TodoList(_userTodos, _deleteTodo)),
+              if(_isLandscape) _showChart
+                  ? Container(
+                      height: (MediaQuery.of(context).size.height -
+                              appBar.preferredSize.height -
+                              MediaQuery.of(context).padding.top) *
+                          0.7,
+                      child: WeekView(_recentTodos))
+                  : Container(
+                      height: (MediaQuery.of(context).size.height -
+                              appBar.preferredSize.height -
+                              MediaQuery.of(context).padding.top) *
+                          0.7,
+                      child: TodoList(_userTodos, _deleteTodo))
+            ],
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

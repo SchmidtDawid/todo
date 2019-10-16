@@ -31,21 +31,23 @@ class WeekView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print(groupedTodosValues);
-    return Card(
-      elevation: 6,
-      margin: EdgeInsets.all(5),
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: groupedTodosValues.map((data) {
-            return Flexible(
-              fit: FlexFit.tight,
-              child: WeekViewBar(
-                data['day'], data['count']
-              )
-            );
-          }).toList(),
+    return Container(
+      child: Card(
+        elevation: 6,
+        margin: EdgeInsets.all(5),
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: groupedTodosValues.map((data) {
+              return Flexible(
+                fit: FlexFit.tight,
+                child: WeekViewBar(
+                  data['day'], data['count']
+                )
+              );
+            }).toList(),
+          ),
         ),
       ),
     );

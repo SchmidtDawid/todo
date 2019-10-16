@@ -10,28 +10,38 @@ class TodoList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-          child: ListView.builder(
-            itemBuilder: (ctx, index) {
-              return Card(
-                child: ListTile(
-                    leading: Text(_todos[index].status.toString()),
-                    title: Text(_todos[index].title,
-                        style:
-                            TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                    subtitle: Text(
-                      DateFormat.yMMMMd().format(_todos[index].date),
-                      style: TextStyle(color: Colors.pink),
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete),
-                      color: Theme.of(context).errorColor,
-                      onPressed: () => _deleteFunction(_todos[index].id),
-                    )),
-              );
-            },
-            itemCount: _todos.length,
-          ),
+    return Container(
+      child: _todos.isEmpty
+          ? Column(
+              children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Text("Nie dodano żadnych zadań :("))
+              ],
+            )
+          : Container(
+              height: MediaQuery.of(context).size.height * 0.6,
+              child: ListView.builder(
+              itemBuilder: (ctx, index) {
+                return Card(
+                  child: ListTile(
+                      leading: Text(_todos[index].status.toString()),
+                      title: Text(_todos[index].title,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20)),
+                      subtitle: Text(
+                        DateFormat.yMMMMd().format(_todos[index].date),
+                        style: TextStyle(color: Colors.pink),
+                      ),
+                      trailing: IconButton(
+                        icon: Icon(Icons.delete),
+                        color: Theme.of(context).errorColor,
+                        onPressed: () => _deleteFunction(_todos[index].id),
+                      )),
+                );
+              },
+              itemCount: _todos.length,
+            )),
     );
   }
 }
